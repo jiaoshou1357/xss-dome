@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <textarea rows="10" class="txt">
+    </textarea>
+    <button onclick="submit()">提交评论</button>
+    <button onclick="getComment()">获取评论</button>
+
+    <script type="text/javascript">
+      function submit(){
+      	var otxt=document.querySelectorAll(".txt")[0]
+      	var txt=otxt.value
+      	var url='/comment?comment='+txt
+      	var xrl=new XMLHttpRequest()
+      	xrl.open('get',url,true);
+      	xrl.onreadystatechange=function(){
+      		if(xrl.readyState==4){
+      			if(xrl.status==200){
+      				console.log("评论成功")
+      			}else{
+      				console.log("评论失败")
+      				
+      			}
+      		}
+      	};
+      	xrl.send()
+      }
+      function getComment(){
+        var url='/getComment?getComment'
+        var xrl=new XMLHttpRequest()
+      	xrl.open('get',url,true)
+      	xrl.onreadystatechange=function(){
+      		if(xrl.readyState==4){
+      			if(xrl.status==200){
+      				var comment=JSON.parse(xrl.response).comment
+      				comment=unescape(comment)
+      				var child=document.createElement('span')
+      				 child.innerHTML=comment;
+      			     document.querySelectorAll('body')[0].appendChild(child)
+      			     console.log('获取评论')
+      			}else{
+      				console.log(error)
+      				
+      			}
+      		}
+      	};
+      	xrl.send()
+      }
+    </script>
+  </body>
+
+</html>
